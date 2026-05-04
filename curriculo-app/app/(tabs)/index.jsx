@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '../../hooks/useAppTheme';
 import { Colors } from '../../constants/theme';
 import { dadosLocais } from '../../constants/api';
+import { View, StyleSheet, ScrollView, Linking, Dimensions, Image } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -35,12 +36,12 @@ export default function HomeScreen() {
           </View>
 
           {/* Avatar */}
-          <View style={styles.avatarContainer}>
-            <View style={styles.avatar}>
-              <MaterialCommunityIcons name="account" size={60} color={Colors.blue} />
-            </View>
-          </View>
-
+        <View style={styles.avatarContainer}>
+          <Image
+          source={require('../../assets/profile.jpg')}
+          style={styles.avatar}
+         />
+        </View>
           <Text style={styles.nome}>{pessoa.nome}</Text>
           <Text style={styles.cargo}>{pessoa.cargo}</Text>
 
@@ -166,14 +167,11 @@ const styles = StyleSheet.create({
   },
   avatarContainer: { marginTop: 10, marginBottom: 14 },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: Colors.cream,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: 'rgba(247,231,189,0.5)',
+  width: 100,
+  height: 100,
+  borderRadius: 50,
+  borderWidth: 3,
+  borderColor: 'rgba(247,231,189,0.5)',
   },
   nome: {
     color: Colors.cream,
