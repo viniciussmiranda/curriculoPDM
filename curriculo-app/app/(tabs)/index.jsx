@@ -1,142 +1,67 @@
+
 import React from 'react';
-import { View, StyleSheet, ScrollView, Linking, Dimensions } from 'react-native';
-import { Text, Chip, IconButton, Surface } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Linking, Image } from 'react-native';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppTheme } from '../../hooks/useAppTheme';
 import { Colors } from '../../constants/theme';
 import { dadosLocais } from '../../constants/api';
-import { View, StyleSheet, ScrollView, Linking, Dimensions, Image } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { pessoa, habilidades, idiomas, certificados } = dadosLocais;
 
 export default function HomeScreen() {
-  const { isDark, toggleTheme, theme } = useAppTheme();
-  const { pessoa, habilidades, idiomas, certificados } = dadosLocais;
-
-  const bg = isDark ? '#0d1b2a' : Colors.creamLight;
-  const cardBg = isDark ? '#1a2f42' : Colors.white;
-  const textPrimary = isDark ? Colors.cream : Colors.blue;
-  const textSecondary = isDark ? 'rgba(247,231,189,0.7)' : Colors.gray;
-
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: bg }]}>
+    <SafeAreaView style={styles.safe}>
       <ScrollView showsVerticalScrollIndicator={false}>
-
-        {/* Header */}
-        <View style={[styles.header, { backgroundColor: Colors.blue }]}>
-          <View style={styles.headerTop}>
-            <Text style={styles.headerLabel}>PORTFÓLIO</Text>
-            <IconButton
-              icon={isDark ? 'weather-sunny' : 'weather-night'}
-              iconColor={Colors.cream}
-              size={22}
-              onPress={toggleTheme}
-            />
-          </View>
-
-          {/* Avatar */}
-        <View style={styles.avatarContainer}>
-          <Image
-          source={require('../../assets/profile.jpg')}
-          style={styles.avatar}
-         />
-        </View>
+        <View style={styles.header}>
+          <Text style={styles.headerLabel}>PORTFÓLIO</Text>
+          <Image source={require('../../assets/profile.jpg')} style={styles.avatar} />
           <Text style={styles.nome}>{pessoa.nome}</Text>
           <Text style={styles.cargo}>{pessoa.cargo}</Text>
-
-          {/* Contatos */}
           <View style={styles.contatos}>
-            <IconButton
-              icon="linkedin"
-              iconColor={Colors.cream}
-              size={22}
-              onPress={() => Linking.openURL('https://' + pessoa.linkedin)}
-            />
-            <IconButton
-              icon="github"
-              iconColor={Colors.cream}
-              size={22}
-              onPress={() => Linking.openURL('https://' + pessoa.github)}
-            />
-            <IconButton
-              icon="email"
-              iconColor={Colors.cream}
-              size={22}
-              onPress={() => Linking.openURL('mailto:' + pessoa.email)}
-            />
-            <IconButton
-              icon="phone"
-              iconColor={Colors.cream}
-              size={22}
-              onPress={() => Linking.openURL('tel:' + pessoa.telefone)}
-            />
+            <MaterialCommunityIcons name="linkedin" size={28} color={Colors.cream} onPress={() => Linking.openURL('https://' + pessoa.linkedin)} style={styles.icon} />
+            <MaterialCommunityIcons name="github" size={28} color={Colors.cream} onPress={() => Linking.openURL('https://' + pessoa.github)} style={styles.icon} />
+            <MaterialCommunityIcons name="email" size={28} color={Colors.cream} onPress={() => Linking.openURL('mailto:' + pessoa.email)} style={styles.icon} />
+            <MaterialCommunityIcons name="phone" size={28} color={Colors.cream} onPress={() => Linking.openURL('tel:' + pessoa.telefone)} style={styles.icon} />
           </View>
         </View>
 
         <View style={styles.content}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Sobre mim</Text>
+            <Text style={styles.cardText}>{pessoa.resumo}</Text>
+          </View>
 
-          {/* Resumo */}
-          <Surface style={[styles.card, { backgroundColor: cardBg }]} elevation={2}>
-            <View style={styles.cardHeader}>
-              <MaterialCommunityIcons name="account-circle" size={20} color={Colors.blue} />
-              <Text style={[styles.cardTitle, { color: textPrimary }]}>Sobre mim</Text>
-            </View>
-            <Text style={[styles.resumo, { color: textSecondary }]}>{pessoa.resumo}</Text>
-          </Surface>
-
-          {/* Habilidades */}
-          <Surface style={[styles.card, { backgroundColor: cardBg }]} elevation={2}>
-            <View style={styles.cardHeader}>
-              <MaterialCommunityIcons name="code-tags" size={20} color={Colors.blue} />
-              <Text style={[styles.cardTitle, { color: textPrimary }]}>Habilidades</Text>
-            </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Habilidades</Text>
             <View style={styles.chips}>
               {habilidades.map((h) => (
-                <Chip
-                  key={h.id}
-                  style={[styles.chip, { backgroundColor: isDark ? Colors.blueDark : Colors.blue }]}
-                  textStyle={{ color: Colors.cream, fontSize: 11 }}
-                >
-                  {h.nome}
-                </Chip>
+                <View key={h.id} style={styles.chip}>
+                  <Text style={styles.chipText}>{h.nome}</Text>
+                </View>
               ))}
             </View>
-          </Surface>
+          </View>
 
-          {/* Idiomas */}
-          <Surface style={[styles.card, { backgroundColor: cardBg }]} elevation={2}>
-            <View style={styles.cardHeader}>
-              <MaterialCommunityIcons name="translate" size={20} color={Colors.blue} />
-              <Text style={[styles.cardTitle, { color: textPrimary }]}>Idiomas</Text>
-            </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Idiomas</Text>
             {idiomas.map((i) => (
-              <View key={i.id} style={styles.idiomaRow}>
-                <Text style={[styles.idiomaName, { color: textPrimary }]}>{i.idioma}</Text>
-                <Chip
-                  style={[styles.nivelChip, { backgroundColor: Colors.cream }]}
-                  textStyle={{ color: Colors.blue, fontSize: 10, fontWeight: '700' }}
-                >
-                  {i.nivel}
-                </Chip>
+              <View key={i.id} style={styles.row}>
+                <Text style={styles.cardText}>{i.idioma}</Text>
+                <View style={styles.nivelBadge}><Text style={styles.nivelText}>{i.nivel}</Text></View>
               </View>
             ))}
-          </Surface>
+          </View>
 
-          {/* Certificados */}
-          <Surface style={[styles.card, { backgroundColor: cardBg }]} elevation={2}>
-            <View style={styles.cardHeader}>
-              <MaterialCommunityIcons name="certificate" size={20} color={Colors.blue} />
-              <Text style={[styles.cardTitle, { color: textPrimary }]}>Certificações</Text>
-            </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Certificações</Text>
             {certificados.map((c) => (
               <View key={c.id} style={styles.certRow}>
-                <MaterialCommunityIcons name="check-circle" size={16} color={Colors.blue} style={{ marginTop: 2 }} />
-                <Text style={[styles.certNome, { color: textSecondary }]}>{c.nome}</Text>
+                <MaterialCommunityIcons name="check-circle" size={16} color={Colors.blue} />
+                <Text style={[styles.cardText, { flex: 1 }]}>{c.nome}</Text>
               </View>
             ))}
-          </Surface>
-
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -144,66 +69,23 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1 },
-  header: {
-    paddingTop: 10,
-    paddingBottom: 30,
-    alignItems: 'center',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 16,
-  },
-  headerLabel: {
-    color: 'rgba(247,231,189,0.6)',
-    fontSize: 11,
-    letterSpacing: 3,
-    fontWeight: '700',
-  },
-  avatarContainer: { marginTop: 10, marginBottom: 14 },
-  avatar: {
-  width: 100,
-  height: 100,
-  borderRadius: 50,
-  borderWidth: 3,
-  borderColor: 'rgba(247,231,189,0.5)',
-  },
-  nome: {
-    color: Colors.cream,
-    fontSize: 24,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-  },
-  cargo: {
-    color: 'rgba(247,231,189,0.75)',
-    fontSize: 13,
-    marginTop: 4,
-    textAlign: 'center',
-    paddingHorizontal: 30,
-  },
-  contatos: { flexDirection: 'row', marginTop: 10 },
+  safe: { flex: 1, backgroundColor: Colors.creamLight },
+  header: { backgroundColor: Colors.blue, alignItems: 'center', paddingTop: 20, paddingBottom: 30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30 },
+  headerLabel: { color: 'rgba(247,231,189,0.6)', fontSize: 11, letterSpacing: 3, fontWeight: '700', marginBottom: 12 },
+  avatar: { width: 100, height: 100, borderRadius: 50, borderWidth: 3, borderColor: Colors.cream, marginBottom: 12 },
+  nome: { color: Colors.cream, fontSize: 24, fontWeight: '800' },
+  cargo: { color: 'rgba(247,231,189,0.75)', fontSize: 13, marginTop: 4, textAlign: 'center', paddingHorizontal: 30 },
+  contatos: { flexDirection: 'row', marginTop: 14, gap: 8 },
+  icon: { padding: 6 },
   content: { padding: 16, gap: 14 },
-  card: { borderRadius: 16, padding: 18 },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
-  cardTitle: { fontSize: 16, fontWeight: '700' },
-  resumo: { fontSize: 14, lineHeight: 22 },
+  card: { backgroundColor: Colors.white, borderRadius: 16, padding: 18, elevation: 2 },
+  cardTitle: { fontSize: 16, fontWeight: '700', color: Colors.blue, marginBottom: 12 },
+  cardText: { fontSize: 14, lineHeight: 22, color: Colors.gray },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { borderRadius: 20 },
-  idiomaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
-  },
-  idiomaName: { fontSize: 14, fontWeight: '600' },
-  nivelChip: { borderRadius: 20, height: 28 },
+  chip: { backgroundColor: Colors.blue, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5 },
+  chipText: { color: Colors.cream, fontSize: 12 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  nivelBadge: { backgroundColor: Colors.cream, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 3 },
+  nivelText: { color: Colors.blue, fontSize: 11, fontWeight: '700' },
   certRow: { flexDirection: 'row', gap: 8, marginBottom: 8, alignItems: 'flex-start' },
-  certNome: { fontSize: 13, flex: 1, lineHeight: 20 },
 });
