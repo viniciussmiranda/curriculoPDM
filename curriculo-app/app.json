@@ -3,6 +3,7 @@
     "name": "curriculo-app",
     "slug": "curriculo-app",
     "version": "1.0.0",
+    "owner": "atividadespdmviniciusmiranda",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "curriculoapp",
